@@ -4,6 +4,7 @@ import { useState } from "react";
 import getPastOrders from "../api/getPastOrders";
 import Modal from "../Modal";
 import getPastOrder from "../api/getPastOrder";
+import ErrorBoundary from "../ErrorBoundary";
 
 const intl = new Intl.NumberFormat("en-IN", {
   style: "currency",
@@ -11,8 +12,15 @@ const intl = new Intl.NumberFormat("en-IN", {
 });
 
 export const Route = createLazyFileRoute("/past")({
-  component: PastOrdersRoute,
+  component: ErrorBoundaryWrappedPastOrderRoutes,
 });
+function ErrorBoundaryWrappedPastOrderRoutes() {
+  return (
+    <ErrorBoundary>
+      <PastOrdersRoute />
+    </ErrorBoundary>
+  );
+}
 
 function PastOrdersRoute() {
   const [page, setPage] = useState(1);
